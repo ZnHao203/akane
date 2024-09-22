@@ -1,0 +1,16 @@
+[remap]
+
+importer="codeandweb.texturepacker_import_spritesheet"
+type="Resource"
+uid="uid://dorwpo7qqukee"
+path="res://.godot/imported/bubbles.tpsheet-1b77063be3b659c6f57c9e8be13f30c4.res"
+
+[deps]
+
+files=["res://assets/bubbles.sprites/bubble3.tres", "res://assets/bubbles.sprites/bubble2.tres", "res://assets/bubbles.sprites/bubble1.tres"]
+
+source_file="res://assets/bubbles.tpsheet"
+dest_files=["res://.godot/imported/bubbles.tpsheet-1b77063be3b659c6f57c9e8be13f30c4.res", "res://assets/bubbles.sprites/bubble3.tres", "res://assets/bubbles.sprites/bubble2.tres", "res://assets/bubbles.sprites/bubble1.tres"]
+
+[params]
+

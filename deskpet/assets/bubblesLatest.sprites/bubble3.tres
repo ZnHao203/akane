@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dtbf3a530fmgf"]
+
+[ext_resource type="Texture2D" uid="uid://cy6lh78y3a3el" path="res://assets/bubblesLatest.png" id="1_bto6m"]
+
+[resource]
+atlas = ExtResource("1_bto6m")
+region = Rect2(1, 1, 97, 198)
+margin = Rect2(1, 1, 3, 2)
