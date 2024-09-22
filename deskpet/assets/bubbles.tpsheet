@@ -1,0 +1,63 @@
+{
+	"textures": [
+		{
+			"image": "bubbles.png",
+			"size": {
+				"w": 145,
+				"h": 198
+			},
+			"sprites": [
+				{
+					"filename": "bubble3.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 95,
+						"h": 196
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "bubble2.png",
+					"region": {
+						"x": 98,
+						"y": 1,
+						"w": 46,
+						"h": 127
+					},
+					"margin": {
+						"x": 10,
+						"y": 10,
+						"w": 10,
+						"h": 14
+					}
+				},
+				{
+					"filename": "bubble1.png",
+					"region": {
+						"x": 98,
+						"y": 130,
+						"w": 36,
+						"h": 53
+					},
+					"margin": {
+						"x": 26,
+						"y": 17,
+						"w": 37,
+						"h": 24
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:52627c1bb74be043fbf62f1818cf6c67:3c4e48f9a3beeb9fa8bf54b946bcc92a:90737bc92f6721f2a450fc421125e36b$"
+	}
+}

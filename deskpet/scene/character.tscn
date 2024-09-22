@@ -1,0 +1,125 @@
+[gd_scene load_steps=10 format=3 uid="uid://b7xp6mlns26po"]
+
+[ext_resource type="Script" path="res://scene/Character.cs" id="1_evxkq"]
+[ext_resource type="Texture2D" uid="uid://d37tiaqu7cc42" path="res://assets/goldfishLeft.png" id="1_gy1q7"]
+[ext_resource type="Texture2D" uid="uid://dkh2tyjagskp8" path="res://assets/fishBreathLeft.png" id="2_601ev"]
+[ext_resource type="Texture2D" uid="uid://dj2wu7dx8au5e" path="res://assets/bubbles.sprites/bubble1.tres" id="2_ocdiv"]
+[ext_resource type="Texture2D" uid="uid://dfv7hwronasud" path="res://assets/bubbles.sprites/bubble2.tres" id="3_23nj1"]
+[ext_resource type="Texture2D" uid="uid://c7yjr4phhpd51" path="res://assets/bubbles.sprites/bubble3.tres" id="4_5h3xs"]
+
+[sub_resource type="Animation" id="Animation_a88yg"]
+resource_name = "fishCanTalk"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fishLeft:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fishLeftBreath:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_mjfgm"]
+resource_name = "getBubbles"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fishLeft:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fishLeftBreath:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("bubbles:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_ocdiv"), ExtResource("3_23nj1"), ExtResource("4_5h3xs")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("bubbles:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7oyap"]
+_data = {
+"fishCanTalk": SubResource("Animation_a88yg"),
+"getBubbles": SubResource("Animation_mjfgm")
+}
+
+[node name="character" type="Node2D"]
+script = ExtResource("1_evxkq")
+
+[node name="fishLeft" type="Sprite2D" parent="."]
+position = Vector2(486, 117)
+texture = ExtResource("1_gy1q7")
+
+[node name="Area2D" type="Area2D" parent="fishLeft"]
+position = Vector2(-2, -45)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="fishLeft/Area2D"]
+visible = false
+polygon = PackedVector2Array(-579, -155, -560, -43, -67, 240, 69, 130, 559, 519, 601, 414, 382, -51, 565, -268, 527, -385, 25, -198, -5, -309, -264, -319)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7oyap")
+}
+
+[node name="fishLeftBreath" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(488, 149)
+texture = ExtResource("2_601ev")
+
+[node name="bubbles" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-137, -12)
+texture = ExtResource("4_5h3xs")
+
+[connection signal="input_event" from="fishLeft/Area2D" to="." method="_on_area_2d_input_event"]
