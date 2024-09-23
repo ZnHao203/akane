@@ -14,13 +14,13 @@ config/name="deskPet"
 run/main_scene="res://scene/main_window.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 0)
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=400
 window/size/viewport_height=300
-window/size/initial_position_type=2
 window/size/borderless=true
 window/size/always_on_top=true
 window/size/transparent=true
@@ -49,5 +49,5 @@ quitGame={
 
 [rendering]
 
-textures/vram_compression/import_etc2_astc=true
+renderer/rendering_method="gl_compatibility"
 viewport/transparent_background=true
