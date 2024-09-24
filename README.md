@@ -4,8 +4,9 @@
 <p> A pretty goldfish, which breathes when you click on it. </p>
 
 <h2> Operations available </h2>
-<p> Click on the fish</p>
+<p> Click on the fish -> get some bubbles! </p>
+<p> Click on the fish, then use Up/Down/Left/Right to control fish movement </p>
 <p> Esc to exit deskpet </p>
 
 <h2> Known bugs </h2>
-<p> Dark background </p>
+<p> Huh? It swims in a very unnatural way... </p>

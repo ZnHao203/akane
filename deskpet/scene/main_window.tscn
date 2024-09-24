@@ -5,18 +5,18 @@
 
 [node name="mainWindow" type="Control"]
 layout_mode = 3
-anchors_preset = 15
+anchor_left = -0.24
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -8.0
+anchor_bottom = 1.013
+offset_left = 88.0
 offset_top = 16.0
 offset_right = 320.0
-offset_bottom = 285.0
+offset_bottom = 281.1
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_xfrif")
 
 [node name="character" parent="." instance=ExtResource("1_1iiyk")]
-position = Vector2(96, 88)
-scale = Vector2(0.297634, 0.297634)
+position = Vector2(164, 40)
+scale = Vector2(0.217634, 0.217634)
