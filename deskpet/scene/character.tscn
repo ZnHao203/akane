@@ -122,4 +122,9 @@ visible = false
 position = Vector2(-379, -29)
 texture = ExtResource("4_5h3xs")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="input_event" from="fishLeft/Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

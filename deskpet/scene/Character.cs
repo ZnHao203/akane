@@ -3,9 +3,12 @@ using System;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.Diagnostics;
+using System.Threading;
 
 public partial class Character : Node2D
 {
+	// track the minimum speed for the fish
+	private int minSpeed = 2;
 	// track the speed of the last moving - used for turning checks
 	private Vector2I lastSpeed;
 	// track the speed of the moving window
@@ -14,6 +17,7 @@ public partial class Character : Node2D
 	private bool directionIsLeft;
 	// record the size of current screen;
 	private Vector2I screenSize;
+	private Godot.Timer _bubbleEventTimer;
 	
 	// animation fnction pointer: 
 	// 		current supported functions: getBubbles
@@ -80,36 +84,12 @@ public partial class Character : Node2D
 
 	}
 
-	private void move()
+	// reduce speed linearly until reaches minimum
+	private void reduceSpeedRegular()
 	{
-		// out of screen handling
-		if (GetWindow().Position.X > screenSize.X || GetWindow().Position.X < 0) 
-		if (GetWindow().Position.X < 0 || GetWindow().Position.X > screenSize.X) 
-		{
-			reverseHorizontal();
-			Debug.Print("GetWindow().Position.ToString" + GetWindow().Position.ToString());
-			// Debug.Print("GetViewport().Size.ToString()" + GetViewport().Size.ToString());
-			Debug.Print("screenSize.X" + screenSize.ToString());
-
-		}
-		if (GetWindow().Position.Y > screenSize.Y || GetWindow().Position.Y < 0) 
-		{
-			reverseVertical();
-		}
-		// check if we want to turn
-		if (lastSpeed.X > 0 && speed.X < 0) // turn left
-		{
-			handleHorizontalMotion(true);
-		} else if (lastSpeed.X < 0 && speed.X > 0) // turn right
-		{
-			handleHorizontalMotion(false);
-		}
-		// move!
-		GetWindow().Position = GetWindow().Position + speed;
 		// update last speed
 		lastSpeed = speed;
 		// update speed - slightly reduce
-		var minSpeed = 2;
 		if (speed.X > minSpeed) {
 			speed.X -= 1;
 		} else if (speed.X < 0-minSpeed) {
@@ -120,6 +100,105 @@ public partial class Character : Node2D
 		} else if (speed.Y < 0-minSpeed) {
 			speed.Y += 1;
 		}
+	}
+	// bubble event handling
+	private bool isBubbleEvent = false;
+	//private Godot.Timer bubbleEventTimer = new Godot.Timer();
+	private void _on_timer_timeout()
+	{
+		isBubbleEvent = false;
+	}
+	
+	// if at minimum speed, to make the fish more realistic, add some random movement
+	// 1 - add bubbles
+	// 2 - accelerate on random direction
+	private void checkSpecialEvent()
+	{
+		// check if at minimum speed!
+		if ((speed.X <= minSpeed) && (speed.X >= 0-minSpeed) &&
+			(speed.Y <= minSpeed) && (speed.Y >= 0-minSpeed))
+		{
+			Debug.Print("Minimum speed branch is reached");
+			// initialize random number generator
+			Random random = new Random();
+			int randomNumber = random.Next(0, 100);
+			// random movement 1 - stop and get bubbles
+			if (randomNumber < 25) 
+			{
+				Debug.Print("Minimum speed branch BUBBLE is reached");
+				isBubbleEvent = true;
+				_animationPlayer.Play("getBubbles");
+				_bubbleEventTimer.Start();
+			}
+			// random movement 2 - speed up!
+			randomNumber = random.Next(0, 100);
+
+			// there should be a number FPS vs the time I expect it to accelerate
+			if (randomNumber <= 1) 
+			{
+				Debug.Print("Minimum speed branch SPEEDUP is reached");
+				randomNumber = random.Next(0, 100);
+				// randomly determine speedup direction
+				if (randomNumber < 30)
+				{
+					addSpeed(new Vector2I(-50, 0));
+				} else if (randomNumber < 60)
+				{
+					addSpeed(new Vector2I(50, 0));
+				} else if (randomNumber < 80)
+				{
+					addSpeed(new Vector2I(0, -20));
+				} else
+				{
+					addSpeed(new Vector2I(0, 20));
+				} 
+			}
+		}
+	}
+	private Vector2I getDisplacement() 
+	{
+		// out of screen handling
+		// if (GetWindow().Position.X > screenSize.X || GetWindow().Position.X < 0) 
+		if (GetWindow().Position.X < 0 || GetWindow().Position.X > screenSize.X) 
+		{
+			reverseHorizontal();
+		}
+		if (GetWindow().Position.Y > screenSize.Y || GetWindow().Position.Y < 0) 
+		{
+			reverseVertical();
+		}
+		Vector2I currFrameSpeed = speed;
+		reduceSpeedRegular();
+		checkSpecialEvent();
+		
+
+		return currFrameSpeed;
+	}
+	private void handleDisplacement()
+	{
+		// check special event blocking
+		if (isBubbleEvent) 
+		{
+			return;
+		}
+		// check if we want to turn
+		if (lastSpeed.X > 0 && speed.X < 0) // turn left
+		{
+			handleHorizontalMotion(true);
+		} else if (lastSpeed.X < 0 && speed.X > 0) // turn right
+		{
+			handleHorizontalMotion(false);
+		}
+		// move!
+		GetWindow().Position = GetWindow().Position + getDisplacement();
+	}
+
+	private void move()
+	{
+		
+
+		
+		handleDisplacement();
 		Debug.Print("Move is reached");
 	}
 
@@ -151,6 +230,7 @@ public partial class Character : Node2D
 
 		// Get the AnimationPlayer node (adjust the path to your AnimationPlayer)
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		_bubbleEventTimer = GetNode<Godot.Timer>("Timer");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
