@@ -84,7 +84,7 @@ public partial class Character : Node2D
 	{
 		// out of screen handling
 		if (GetWindow().Position.X > screenSize.X || GetWindow().Position.X < 0) 
-		if (GetWindow().Position.X < 0) 
+		if (GetWindow().Position.X < 0 || GetWindow().Position.X > screenSize.X) 
 		{
 			reverseHorizontal();
 			Debug.Print("GetWindow().Position.ToString" + GetWindow().Position.ToString());
@@ -135,6 +135,9 @@ public partial class Character : Node2D
 		// initialize local variables
 		speed = new Vector2I(0, 10);
 		directionIsLeft = true;
+
+		// set initial position
+		GetWindow().Position = new Vector2I(0,0);
 
 		// get screen size
 		var screenID = DisplayServer.WindowGetCurrentScreen();
