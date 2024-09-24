@@ -97,7 +97,7 @@ _data = {
 script = ExtResource("1_evxkq")
 
 [node name="fishLeft" type="Sprite2D" parent="."]
-position = Vector2(486, 117)
+position = Vector2(228, 119)
 texture = ExtResource("1_gy1q7")
 
 [node name="Area2D" type="Area2D" parent="fishLeft"]
@@ -114,12 +114,12 @@ libraries = {
 
 [node name="fishLeftBreath" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(488, 149)
+position = Vector2(233, 151)
 texture = ExtResource("2_601ev")
 
 [node name="bubbles" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(-137, -12)
+position = Vector2(-379, -29)
 texture = ExtResource("4_5h3xs")
 
 [connection signal="input_event" from="fishLeft/Area2D" to="." method="_on_area_2d_input_event"]

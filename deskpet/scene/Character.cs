@@ -3,6 +3,8 @@ using System;
 
 public partial class Character : Node2D
 {
+	// animation fnction pointer: 
+	// 		current supported functions: getBubbles
 	private AnimationPlayer _animationPlayer;
 	
 	// This is the signal handler method that will be connected to the Area2D signal
