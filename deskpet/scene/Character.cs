@@ -32,6 +32,10 @@ public partial class Character : Node2D
 			// flip horizontally
 			ApplyScale(new Vector2(-1, 1));
 			directionIsLeft = newDirectionIsLeft;
+			_animationPlayer.Play("fishTurn");
+
+			isBubbleEvent= true;
+			_bubbleEventTimer.Start(0.6);
 		}
 		// TODO: add turning animation here
 		Debug.Print("handleHorizontal Motion is reached");
@@ -127,7 +131,7 @@ public partial class Character : Node2D
 	{
 		isBubbleEvent = true;
 		_animationPlayer.Play("getBubbles");
-		_bubbleEventTimer.Start();
+		_bubbleEventTimer.Start(2);
 	}
 	// increse the speed for random direction and random value
 	private void startSpeedUp(int maxSpeedUpX, int maxSpeedUpY)
