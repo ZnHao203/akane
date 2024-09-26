@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b7xp6mlns26po"]
+[gd_scene load_steps=13 format=3 uid="uid://b7xp6mlns26po"]
 
 [ext_resource type="Script" path="res://scene/Character.cs" id="1_evxkq"]
 [ext_resource type="Texture2D" uid="uid://d37tiaqu7cc42" path="res://assets/goldfishLeft.png" id="1_gy1q7"]
@@ -6,6 +6,34 @@
 [ext_resource type="Texture2D" uid="uid://dj2wu7dx8au5e" path="res://assets/bubbles.sprites/bubble1.tres" id="2_ocdiv"]
 [ext_resource type="Texture2D" uid="uid://dfv7hwronasud" path="res://assets/bubbles.sprites/bubble2.tres" id="3_23nj1"]
 [ext_resource type="Texture2D" uid="uid://c7yjr4phhpd51" path="res://assets/bubbles.sprites/bubble3.tres" id="4_5h3xs"]
+[ext_resource type="Texture2D" uid="uid://d2dpk6gcu152p" path="res://assets/fishTurn.png" id="7_mqy16"]
+
+[sub_resource type="Animation" id="Animation_k1kq8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fishLeftTurn:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fishLeft:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_a88yg"]
 resource_name = "fishCanTalk"
@@ -33,6 +61,34 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_j6yfq"]
+resource_name = "fishTurn"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fishLeftTurn:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fishLeft:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_mjfgm"]
@@ -89,7 +145,9 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7oyap"]
 _data = {
+"RESET": SubResource("Animation_k1kq8"),
 "fishCanTalk": SubResource("Animation_a88yg"),
+"fishTurn": SubResource("Animation_j6yfq"),
 "getBubbles": SubResource("Animation_mjfgm")
 }
 
@@ -122,4 +180,14 @@ visible = false
 position = Vector2(-379, -29)
 texture = ExtResource("4_5h3xs")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="fishLeftTurn" type="Sprite2D" parent="."]
+position = Vector2(-17, 131)
+rotation = -0.349299
+texture = ExtResource("7_mqy16")
+
 [connection signal="input_event" from="fishLeft/Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
