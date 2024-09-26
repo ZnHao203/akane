@@ -36,9 +36,10 @@ public partial class Character : Node2D
 
 			isBubbleEvent= true;
 			_bubbleEventTimer.Start(0.6);
+			Debug.Print("handleHorizontal Motion is reached");
 		}
 		// TODO: add turning animation here
-		Debug.Print("handleHorizontal Motion is reached");
+		
 	}
 
 	// return the current speed
@@ -118,7 +119,7 @@ public partial class Character : Node2D
 		}
 	}
 	// bubble event handling
-	private bool isBubbleEvent = false;
+	private bool isBubbleEvent;
 	//private Godot.Timer bubbleEventTimer = new Godot.Timer();
 	private void _on_timer_timeout()
 	{
@@ -238,9 +239,15 @@ public partial class Character : Node2D
 		GD.Print("Hello from C# to Godot :)");
 		
 		// initialize local variables
-		speed = new Vector2I(0, 2);
-		lastSpeed = new Vector2I(-1, 2);
-		directionIsLeft = true;
+		speed = new Vector2I(2, 2);
+		lastSpeed = new Vector2I(2, 2);
+		ApplyScale(new Vector2(-1, 1));
+		directionIsLeft = false;
+		isBubbleEvent = false;
+
+		// when inited, we don't want fishTurn texture to be visible
+		var fishTurn = GetNode<Sprite2D>("fishLeftTurn");
+		fishTurn.Visible = false;
 
 		// set initial position
 		GetWindow().Position = new Vector2I(0,0);
