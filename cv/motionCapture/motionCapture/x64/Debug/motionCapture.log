@@ -1,0 +1,11 @@
+﻿  motionCapture.cpp
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(25,17): error C2871: 'cv': a namespace with this name does not exist
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(25,17): error C2065: 'cv': undeclared identifier
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(29,5): error C2065: 'Mat': undeclared identifier
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(29,9): error C2146: syntax error: missing ';' before identifier 'img'
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(29,9): error C2065: 'img': undeclared identifier
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(29,34): error C2065: 'IMREAD_COLOR': undeclared identifier
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(29,15): error C3861: 'imread': identifier not found
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(31,30): error C2065: 'img': undeclared identifier
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(31,5): error C3861: 'imshow': identifier not found
+C:\Users\hower\Documents\akane\cv\motionCapture\motionCapture\motionCapture.cpp(32,13): error C3861: 'waitKey': identifier not found
