@@ -79,7 +79,7 @@ int main()
     HWND hwnd = NULL;
     UINT_PTR timerID = SetTimer(hwnd,             // handle to main window 
         1,            // timer identifier 
-        1000,                 // 10-second interval 
+        500,                 // ?-second interval 
         (TIMERPROC)TimerProc);     // no timer callback 
     if (timerID == 0) {
         // handle error
@@ -99,8 +99,8 @@ int main()
         // save frame every second
         if (takeImage) {
             takeImage = false;
-            if (counter < 1000) {
-                filename = "frame_" + to_string(counter) + ".png";
+            if (counter < 100000) {
+                filename = "img/frame_" + to_string(counter) + ".png";
                 cout << filename << endl;
                 result = imwrite(filename, frame);
                 if (result != true) {
