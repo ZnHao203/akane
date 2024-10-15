@@ -29,9 +29,11 @@ public partial class Character : Node2D
 		// only turn if new direction is different from the last direction
 		if (directionIsLeft != newDirectionIsLeft)
 		{
-			// flip horizontally
-			ApplyScale(new Vector2(-1, 1));
+			// flip horizontally then turn
+			// NOTE: need to adjust fish turn animation to adapt this
+			
 			directionIsLeft = newDirectionIsLeft;
+			ApplyScale(new Vector2(-1, 1));
 			_animationPlayer.Play("fishTurn");
 
 			isBubbleEvent= true;
@@ -171,6 +173,17 @@ public partial class Character : Node2D
 
 	
 	private MovementControl moveCtrl;
+
+	// set to true if you want some glasses
+	private bool glass_mod = true;
+	private void _on_fishturn_animation_player_animation_finished(StringName anim_name)
+	{
+		// want a mod for glass!
+		if (!glass_mod) {
+			GetNode<Sprite2D>("glass").Visible = false;
+			GD.Print("_on_fishturn_animation_player_animation_finished glass.Visible = false reached");
+		}
+	}
 	
 	
 	// Called when the node enters the scene tree for the first time.
@@ -181,12 +194,12 @@ public partial class Character : Node2D
 		// initialize local variables
 		speed = new Vector2I(2, 2);
 		lastSpeed = new Vector2I(2, 2);
-		ApplyScale(new Vector2(-1, 1));
+		// ApplyScale(new Vector2(-1, 1));
 		directionIsLeft = false;
 		isBubbleEvent = false;
 
 		// when inited, we don't want fishTurn texture to be visible
-		var fishTurn = GetNode<Sprite2D>("fishLeftTurn");
+		var fishTurn = GetNode<Sprite2D>("turn");
 		fishTurn.Visible = false;
 
 		// set initial position
@@ -197,7 +210,7 @@ public partial class Character : Node2D
 		screenSize = DisplayServer.ScreenGetSize(screenID);
 
 		// Get the Area2D node
-		var area2D = GetNode<Area2D>("fishLeft/Area2D");
+		var area2D = GetNode<Area2D>("body/Area2D");
 
 		// Connect the input_event signal to the handler method
 		// area2D.Connect("input_event", new Callable(this, nameof(_on_area_2d_input_event)));
@@ -206,6 +219,21 @@ public partial class Character : Node2D
 		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_bubbleEventTimer = GetNode<Godot.Timer>("Timer");
 
+		// animate the fins
+		GetNode<AnimatedSprite2D>("pectoral/pectoralAnimatedSprite2D").Play();
+		GetNode<AnimatedSprite2D>("dorsal/dorsalAnimatedSprite2D").Play();
+		GetNode<AnimatedSprite2D>("anal/analAnimatedSprite2D").Play();
+		GetNode<AnimatedSprite2D>("tail/tailAnimatedSprite2D").Play();
+
+		// want a mod for glass!
+		if (glass_mod)
+		{
+			GetNode<AnimatedSprite2D>("glass/glassAnimatedSprite2D").Play();
+			GetNode<Sprite2D>("glass").Visible = true;
+		} else {
+			GetNode<Sprite2D>("glass").Visible = false;
+		}
+		
 
 		moveCtrl = new MovementControl();
 	}
