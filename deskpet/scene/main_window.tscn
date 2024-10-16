@@ -18,5 +18,5 @@ mouse_filter = 2
 script = ExtResource("1_xfrif")
 
 [node name="character" parent="." instance=ExtResource("1_1iiyk")]
-position = Vector2(164, 40)
+position = Vector2(164, 47)
 scale = Vector2(0.217634, 0.217634)
