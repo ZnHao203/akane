@@ -63,6 +63,21 @@ class MovementControl
         updateSpeed();
         return polarToCartesian();
     }
+    // return how much to rotate - keep in mind the correct flipping is always assumed
+    // TODO: this is very unstable
+    // TODO: add a smooth transition
+    public float getRotationDegrees()
+    {
+        // no rotate if idle
+        if (currRAction == rAction.IDLE) return 0;
+        double rotateDegree = theta;
+        if (rotateDegree > 90) {
+            rotateDegree = 180 - rotateDegree;
+        }
+        // no rotate if small angle
+        if (rotateDegree < 30 && rotateDegree > -30) return 0;
+        return (float) -rotateDegree;
+    }
     // update action
     private void updateAction()
     {

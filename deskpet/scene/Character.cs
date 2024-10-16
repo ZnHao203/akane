@@ -123,6 +123,11 @@ public partial class Character : Node2D
 			startBubbleEvent();
 		}
 	}
+
+	private void handleRotation()
+	{
+		GetNode<Node2D>(".").RotationDegrees = moveCtrl.getRotationDegrees();
+	}
 	private void move()
 	{
 		// handleDisplacement();
@@ -131,6 +136,8 @@ public partial class Character : Node2D
 		if (isBubbleEvent) return;
 
 		Vector2I displacement = moveCtrl.getDisplacement();
+		handleRotation();
+
 		// out of screen handling
 		// reverse speed direction if at bound of screen 
 		if (GetWindow().Position.X < 0) 
