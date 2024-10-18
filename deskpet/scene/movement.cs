@@ -180,10 +180,10 @@ class MovementControl
         // update theta
         if (currThetaAction == thetaAction.INCREASE)
         {
-            theta += 10;
+            theta += 5;
         } else if (currThetaAction == thetaAction.DECREASE)
         {
-            theta -= 10;
+            theta -= 5;
         }
         if (theta % 360 == 0) theta = 0; // +-360 degree is just 0 degree
     }
