@@ -17,6 +17,8 @@ public partial class Character : Node2D
 	private bool directionIsLeft;
 	// record the size of current screen;
 	private Vector2I screenSize;
+	// record the size of current game window;
+	private Vector2I windowSize;
 	private Godot.Timer _bubbleEventTimer;
 	
 	// animation fnction pointer: 
@@ -144,12 +146,13 @@ public partial class Character : Node2D
 		{
 			if (displacement.X < 0) displacement.X = 0;
 			Debug.Print("SCREEN EDGE HANDLING CASE 1 is reached");
-		} else if (GetWindow().Position.X > screenSize.X)
+		} else if (GetWindow().Position.X > (screenSize.X - windowSize.X)) // consider the buffer of the game window itself
 		{
 			if (displacement.X > 0) displacement.X = 0;
 			Debug.Print("SCREEN EDGE HANDLING CASE 2 is reached");
 		}
-		if (GetWindow().Position.Y > screenSize.Y) 
+		
+		if (GetWindow().Position.Y > (screenSize.Y - windowSize.Y))  // consider the buffer of the game window itself
 		{
 			if (displacement.Y > 0) displacement.Y = 0;
 			Debug.Print("SCREEN EDGE HANDLING CASE 3 is reached");
@@ -215,6 +218,7 @@ public partial class Character : Node2D
 		// get screen size
 		var screenID = DisplayServer.WindowGetCurrentScreen();
 		screenSize = DisplayServer.ScreenGetSize(screenID);
+		windowSize = GetWindow().Size;
 
 		// Get the Area2D node
 		var area2D = GetNode<Area2D>("body/Area2D");

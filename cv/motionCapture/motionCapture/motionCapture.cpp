@@ -75,7 +75,7 @@ int main()
         return -1;
     }
 
-    // timer every 1 sec
+    // timer every .5 sec
     HWND hwnd = NULL;
     UINT_PTR timerID = SetTimer(hwnd,             // handle to main window 
         1,            // timer identifier 
