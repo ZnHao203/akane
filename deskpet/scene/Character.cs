@@ -222,7 +222,15 @@ public partial class Character : Node2D
 		// get screen size
 		var screenID = DisplayServer.WindowGetCurrentScreen();
 		screenSize = DisplayServer.ScreenGetSize(screenID);
+
+		// stretch window size to fit 
+		// tested 250 window width in 1920x1280 resolution screen, which look good
+		float scaleFactor = screenSize.X / 1920;
+		GetWindow().ContentScaleFactor = scaleFactor;
+
+		// get window size for border checks
 		windowSize = GetWindow().Size;
+
 
 		// Get the Area2D node
 		var area2D = GetNode<Area2D>("body/Area2D");
