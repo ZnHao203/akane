@@ -178,7 +178,7 @@ public partial class Character : Node2D
 			handleIdleMotion();
 		}
 
-		Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
+		// Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
 		// move!
 		GetWindow().Position = GetWindow().Position + displacement;
 		// update variables - but not include 0, so we have previous direction
@@ -225,11 +225,15 @@ public partial class Character : Node2D
 
 		// stretch window size to fit 
 		// tested 250 window width in 1920x1280 resolution screen, which look good
-		float scaleFactor = screenSize.X / 1920;
-		GetWindow().ContentScaleFactor = scaleFactor;
+		double scaleFactor = Math.Ceiling((double) screenSize.X / (double)1920);
+		GD.Print("the screen size is " + screenSize.X.ToString());
+		GD.Print("the window scale factor is set to " + ((int)scaleFactor).ToString());
 
 		// get window size for border checks
-		windowSize = GetWindow().Size;
+		windowSize = GetWindow().Size; // initially should be (250,200)
+		Vector2I newSize = new Vector2I(windowSize.X*(int)scaleFactor, windowSize.Y*(int)scaleFactor);
+		GetWindow().Size = newSize;  // scale viewport size
+		windowSize = GetWindow().Size; // then save a again
 
 
 		// Get the Area2D node
