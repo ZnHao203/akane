@@ -66,7 +66,7 @@ class MovementControl
     // return how much to rotate - keep in mind the correct flipping is always assumed
     // TODO: this is very unstable
     // TODO: add a smooth transition
-    public float getRotationDegrees()
+    public float getRotationDegrees(float currentDegree)
     {
         // no rotate if idle
         if (currRAction == rAction.IDLE) return 0;
@@ -75,7 +75,14 @@ class MovementControl
             rotateDegree = 180 - rotateDegree;
         }
         // no rotate if small angle
-        if (rotateDegree < 30 && rotateDegree > -30) return 0;
+        // if (rotateDegree < 30 && rotateDegree > -30) return 0;
+        int stepDegree = 1;
+        if (rotateDegree - currentDegree > stepDegree) {
+            return (float) currentDegree -1;
+
+        } else if (rotateDegree - currentDegree < stepDegree) {
+            return (float) currentDegree +1;
+        }
         return (float) -rotateDegree;
     }
     // update action
@@ -92,9 +99,9 @@ class MovementControl
         if (currRAction == rAction.IDLE) 
         {
             // idle state
-            // 98% -> still idle
-            // 2% -> speedup
-            if (randomNumber < 2) currRAction = rAction.SPEEDUP;
+            // 95% -> still idle
+            // 5% -> speedup
+            if (randomNumber < 5) currRAction = rAction.SPEEDUP;
         } else if (currRAction == rAction.SPEEDUP) 
         {
             // speedup state

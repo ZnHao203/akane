@@ -59,19 +59,19 @@ public partial class Character : Node2D
 	{
 		GD.Print("Input Event detected: ", inputEvent);
 		
-		// Check if the input event is a mouse button event
-		if (inputEvent is InputEventMouseButton mouseEvent)
-		{
-			// Check if the left mouse button was pressed
-			if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
-			{
-				// increase speed 
-				moveCtrl.increaseSpeed();
-				// stop bubbling
-				_bubbleEventTimer.Stop();
-				isBubbleEvent = false;
-			}
-		}
+		// // Check if the input event is a mouse button event
+		// if (inputEvent is InputEventMouseButton mouseEvent)
+		// {
+		// 	// Check if the left mouse button was pressed
+		// 	if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
+		// 	{
+		// 		// increase speed 
+		// 		moveCtrl.increaseSpeed();
+		// 		// stop bubbling
+		// 		_bubbleEventTimer.Stop();
+		// 		isBubbleEvent = false;
+		// 	}
+		// }
 			
 	}
 
@@ -81,6 +81,8 @@ public partial class Character : Node2D
 	private void _on_timer_timeout()
 	{
 		isBubbleEvent = false;
+		_animationPlayer.Stop();
+		_animationPlayer.Play("RESET");
 		Debug.Print("TIMER TIMEOUT INTERRUPT is reached");
 	}
 	
@@ -88,6 +90,8 @@ public partial class Character : Node2D
 	private void startBubbleEvent()
 	{
 		isBubbleEvent = true;
+		_animationPlayer.Stop();
+
 		_animationPlayer.Play("getBubbles");
 		_bubbleEventTimer.Start(2);
 	}
@@ -126,7 +130,7 @@ public partial class Character : Node2D
 
 	private void handleRotation()
 	{
-		GetNode<Node2D>(".").RotationDegrees = moveCtrl.getRotationDegrees();
+		GetNode<Node2D>(".").RotationDegrees = moveCtrl.getRotationDegrees(GetNode<Node2D>(".").RotationDegrees);
 	}
 	private void move()
 	{
