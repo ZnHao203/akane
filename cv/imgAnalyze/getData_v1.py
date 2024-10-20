@@ -147,8 +147,9 @@ def get_fish_data(image, show_result):
 
 #loop through img folder
 # skip first few due to bad quality
-# for i in range(4, num_images):
-for i in range(4, 100):
+# for i in range(4, 100):
+for i in range(4, num_images):
+
     # Load the image
     image = cv2.imread(os.path.join(folder_path, f'frame_{i}.png'))
 

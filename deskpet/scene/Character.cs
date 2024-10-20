@@ -94,6 +94,12 @@ public partial class Character : Node2D
 		isBubbleEvent = true;
 		_animationPlayer.Stop();
 
+		// want a mod for glass!
+		if (!glass_mod) {
+			GetNode<Sprite2D>("glass").Visible = false;
+			GD.Print("_on_fishturn_animation_player_animation_finished glass.Visible = false reached");
+		}
+
 		_animationPlayer.Play("getBubbles");
 		_bubbleEventTimer.Start(2);
 	}
@@ -142,7 +148,7 @@ public partial class Character : Node2D
 		if (isBubbleEvent) return;
 
 		Vector2I displacement = moveCtrl.getDisplacement();
-		handleRotation();
+		//handleRotation();
 
 		// out of screen handling
 		// reverse speed direction if at bound of screen 
@@ -189,7 +195,7 @@ public partial class Character : Node2D
 	private MovementControl moveCtrl;
 
 	// set to true if you want some glasses
-	private bool glass_mod = true;
+	private bool glass_mod = false;
 	private void _on_fishturn_animation_player_animation_finished(StringName anim_name)
 	{
 		// want a mod for glass!
