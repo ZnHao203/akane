@@ -140,36 +140,46 @@ public partial class Character : Node2D
 	{
 		GetNode<Node2D>(".").RotationDegrees = moveCtrl.getRotationDegrees(GetNode<Node2D>(".").RotationDegrees);
 	}
-	private void move()
+	private void move(double delta)
 	{
 		// handleDisplacement();
 		
 		// check if we need to wait until the bubble event is finished
 		if (isBubbleEvent) return;
 
-		Vector2I displacement = moveCtrl.getDisplacement();
+		Vector2 displacement = moveCtrl.getDisplacement();
 		//handleRotation();
+
+		Vector2I currPosition = GetWindow().Position;
 
 		// out of screen handling
 		// reverse speed direction if at bound of screen 
-		if (GetWindow().Position.X < 0) 
+		if (currPosition.X <= 0) 
 		{
 			if (displacement.X < 0) displacement.X = 0;
+			currPosition.X = 0; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 1 is reached");
-		} else if (GetWindow().Position.X > (screenSize.X - windowSize.X)) // consider the buffer of the game window itself
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
+		} else if (currPosition.X >= (screenSize.X - windowSize.X)) // consider the buffer of the game window itself
 		{
 			if (displacement.X > 0) displacement.X = 0;
+			currPosition.X = screenSize.X - windowSize.X; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 2 is reached");
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
 		}
 		
-		if (GetWindow().Position.Y > (screenSize.Y - windowSize.Y))  // consider the buffer of the game window itself
+		if (currPosition.Y >= (screenSize.Y - windowSize.Y))  // consider the buffer of the game window itself
 		{
 			if (displacement.Y > 0) displacement.Y = 0;
+			currPosition.Y = screenSize.Y - windowSize.Y; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 3 is reached");
-		} else if (GetWindow().Position.Y < 0)
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
+		} else if (currPosition.Y <= 0)
 		{
 			if (displacement.Y < 0) displacement.Y = 0;
+			currPosition.Y = 0; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 4 is reached");
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
 		}
 
 		// turning animation
@@ -185,10 +195,15 @@ public partial class Character : Node2D
 		}
 
 		// Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
+
+		// use delta (in sec) make calculations independent of the framerate
+		// multiple a speed value by delta to animate a moving object 
+		displacement.X = (int) (displacement.X * delta);
+		displacement.Y = (int) (displacement.Y * delta);
 		// move!
-		GetWindow().Position = GetWindow().Position + displacement;
+		GetWindow().Position = currPosition + (Vector2I)displacement;
 		// update variables - but not include 0, so we have previous direction
-		if (displacement.X != 0) lastSpeed = displacement;
+		if (displacement.X != 0) lastSpeed = (Vector2I)displacement;
 	}
 
 	
@@ -230,17 +245,20 @@ public partial class Character : Node2D
 		screenSize = DisplayServer.ScreenGetSize(screenID);
 
 		// stretch window size to fit 
-		// tested 250 window width in 1920x1280 resolution screen, which look good
+		// /*tested 200 window width in 1920x1280 resolution screen, which look good */
+		// double scaleFactor = Math.Ceiling((double) screenSize.X / (double)1920);
+
+		/* v2 - decrease fish vs tank ratio, try 1:10 */
 		double scaleFactor = Math.Ceiling((double) screenSize.X / (double)1920);
 		GD.Print("the screen size is " + screenSize.X.ToString());
 		GD.Print("the window scale factor is set to " + ((int)scaleFactor).ToString());
 
 		// get window size for border checks
-		windowSize = GetWindow().Size; // initially should be (250,200)
+		windowSize = GetWindow().Size; // initially should be (200,160)
 		Vector2I newSize = new Vector2I(windowSize.X*(int)scaleFactor, windowSize.Y*(int)scaleFactor);
 		GetWindow().Size = newSize;  // scale viewport size
 		windowSize = GetWindow().Size; // then save a again
-
+		GD.Print("the window size is set to " + windowSize.X.ToString() + ", " + windowSize.Y.ToString());
 
 		// Get the Area2D node
 		var area2D = GetNode<Area2D>("body/Area2D");
@@ -274,6 +292,6 @@ public partial class Character : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		move();
+		move(delta);
 	}
 }
