@@ -47,7 +47,8 @@ class MovementControl
         currThetaAction = thetaAction.KEEP;
 
         // Create a timer with a 0.5 second interval.
-        rTimer = new System.Timers.Timer(1000);
+        // rTimer = new System.Timers.Timer(1000);
+        rTimer = new System.Timers.Timer(500);
         // Hook up the Elapsed event for the timer. 
         rTimer.Elapsed += OnTimedEvent;
         rTimer.AutoReset = true;
