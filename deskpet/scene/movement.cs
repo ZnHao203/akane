@@ -40,7 +40,7 @@ class MovementControl
     // initialize variables
     public MovementControl() {
         // initialize variables
-        maxR = 40; // TODO: needs adjustments
+        maxR = 400; // TODO: needs adjustments
         r = 50;
         theta = 0;
         currRAction = rAction.KEEP;
@@ -98,7 +98,13 @@ class MovementControl
     {
         /* directly uses a mean and std from x/y direction, no polar conversion */
         /* use it on r */
-        double rChange = getNextGaussian(-0.0098, 16.72);
+        double rChange;
+        if (r > maxR) {
+            rChange  = getNextGaussian(-10, 16.72);
+        } else {
+            rChange = getNextGaussian(-0.0098, 16.72);
+        }
+        
         if (rChange > 0) {
             currRAction = rAction.SPEEDUP;
         } else if (rChange < 0) {
