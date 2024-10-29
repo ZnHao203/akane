@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b7xp6mlns26po"]
+[gd_scene load_steps=36 format=3 uid="uid://b7xp6mlns26po"]
 
 [ext_resource type="Script" path="res://scene/Character.cs" id="1_evxkq"]
 [ext_resource type="Texture2D" uid="uid://dj2wu7dx8au5e" path="res://assets/bubbles.sprites/bubble1.tres" id="2_ocdiv"]
@@ -6,9 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://c7yjr4phhpd51" path="res://assets/bubbles.sprites/bubble3.tres" id="4_5h3xs"]
 [ext_resource type="Texture2D" uid="uid://cbvbxh6qrxxyt" path="res://assets/lineDraft/mouth/mouth2.png" id="4_j55c2"]
 [ext_resource type="Texture2D" uid="uid://cpdwrvj23tcr7" path="res://assets/lineDraft/turn/turn2.png" id="5_075gj"]
-[ext_resource type="Texture2D" uid="uid://dyr7uvbw7ag5y" path="res://assets/lineDraft/body/body1.png" id="8_2uslk"]
 [ext_resource type="Texture2D" uid="uid://bba36u18dgw0o" path="res://assets/lineDraft/turn/turn1.png" id="9_gqka1"]
+[ext_resource type="Texture2D" uid="uid://br0tyy8bmxxgr" path="res://assets/lineDraft/body/body2.png" id="9_hvwqd"]
 [ext_resource type="Texture2D" uid="uid://huvxpk7uhu2w" path="res://assets/lineDraft/mouth/mouth1.png" id="10_hq2qh"]
+[ext_resource type="Texture2D" uid="uid://dvld0xdpsu3o6" path="res://assets/lineDraft/eyes/eyes2.png" id="10_iwx1y"]
 [ext_resource type="Texture2D" uid="uid://dlfd4qlfhp8nk" path="res://assets/lineDraft/dorsal/fin1.png" id="11_6xbt1"]
 [ext_resource type="Texture2D" uid="uid://digm76xtfixm4" path="res://assets/lineDraft/anal/anal2.png" id="11_fsn7o"]
 [ext_resource type="Texture2D" uid="uid://daf8diylc8lki" path="res://assets/lineDraft/glass/glass2.png" id="11_pogp1"]
@@ -26,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://ciru4ohwy8wwg" path="res://assets/lineDraft/tail/tail2.png" id="22_qvxfb"]
 [ext_resource type="Texture2D" uid="uid://xp5tyclfqopf" path="res://assets/lineDraft/tail/tail3.png" id="23_bclus"]
 [ext_resource type="Texture2D" uid="uid://ctnxmhw3na5j0" path="res://assets/lineDraft/tail/tail4.png" id="24_trft7"]
+[ext_resource type="Texture2D" uid="uid://b3bv002mnnmrk" path="res://assets/lineDraft/eyes/eyes1.png" id="27_s0oal"]
 
 [sub_resource type="Animation" id="Animation_k1kq8"]
 length = 0.001
@@ -136,6 +138,30 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("eyes:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("eyes:texture")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("27_s0oal")]
 }
 
 [sub_resource type="Animation" id="Animation_a88yg"]
@@ -264,6 +290,18 @@ tracks/8/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("eyes:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="Animation" id="Animation_mjfgm"]
 resource_name = "getBubbles"
@@ -304,6 +342,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [ExtResource("4_j55c2"), ExtResource("10_hq2qh"), ExtResource("4_j55c2"), ExtResource("10_hq2qh")]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("eyes:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("10_iwx1y"), ExtResource("27_s0oal")]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7oyap"]
 _data = {
@@ -312,20 +362,6 @@ _data = {
 "fishTurn": SubResource("Animation_j6yfq"),
 "getBubbles": SubResource("Animation_mjfgm")
 }
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_b47dq"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("15_atvq0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_pogp1")
-}],
-"loop": true,
-"name": &"glassMove",
-"speed": 1.0
-}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kljx8"]
 resource_local_to_scene = true
@@ -423,6 +459,20 @@ animations = [{
 "speed": 1.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_b47dq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_atvq0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_pogp1")
+}],
+"loop": true,
+"name": &"glassMove",
+"speed": 1.0
+}]
+
 [node name="character" type="Node2D"]
 script = ExtResource("1_evxkq")
 
@@ -441,7 +491,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="body" type="Sprite2D" parent="."]
-texture = ExtResource("8_2uslk")
+texture = ExtResource("9_hvwqd")
 
 [node name="Area2D" type="Area2D" parent="body"]
 position = Vector2(-2, -45)
@@ -458,12 +508,6 @@ flip_h = true
 
 [node name="mouth" type="Sprite2D" parent="."]
 texture = ExtResource("10_hq2qh")
-
-[node name="glass" type="Sprite2D" parent="."]
-
-[node name="glassAnimatedSprite2D" type="AnimatedSprite2D" parent="glass"]
-sprite_frames = SubResource("SpriteFrames_b47dq")
-animation = &"glassMove"
 
 [node name="dorsal" type="Sprite2D" parent="."]
 
@@ -491,6 +535,16 @@ frame_progress = 0.0367955
 [node name="tailAnimatedSprite2D" type="AnimatedSprite2D" parent="tail"]
 sprite_frames = SubResource("SpriteFrames_kljx8")
 animation = &"tailMove"
+
+[node name="eyes" type="Sprite2D" parent="."]
+texture = ExtResource("27_s0oal")
+
+[node name="glass" type="Sprite2D" parent="."]
+visible = false
+
+[node name="glassAnimatedSprite2D" type="AnimatedSprite2D" parent="glass"]
+sprite_frames = SubResource("SpriteFrames_b47dq")
+animation = &"glassMove"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_fishturn_animation_player_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
