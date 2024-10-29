@@ -41,13 +41,12 @@ class MovementControl
     public MovementControl() {
         // initialize variables
         maxR = 40; // TODO: needs adjustments
-        r = 0;
+        r = 50;
         theta = 0;
         currRAction = rAction.KEEP;
         currThetaAction = thetaAction.KEEP;
 
         // Create a timer with a 0.5 second interval.
-        // rTimer = new System.Timers.Timer(1000);
         rTimer = new System.Timers.Timer(500);
         // Hook up the Elapsed event for the timer. 
         rTimer.Elapsed += OnTimedEvent;
@@ -73,7 +72,7 @@ class MovementControl
         var thetaInRad = degreeToRadian(theta);
         var x = Math.Round( r * Math.Cos(thetaInRad) );
         var y = Math.Round( r * Math.Sin(thetaInRad) );
-        //return new Vector2I( Convert.ToInt16(x), Convert.ToInt16(y) );
+        // return new Vector2I( Convert.ToInt16(x), Convert.ToInt16(y) );
         return new Vector2((float)x, (float)y);
     }
     // return current speed

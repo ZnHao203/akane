@@ -148,7 +148,7 @@ public partial class Character : Node2D
 		if (isBubbleEvent) return;
 
 		Vector2 displacement = moveCtrl.getDisplacement();
-		//handleRotation();
+		// handleRotation(); /* experimental */
 
 		Vector2I currPosition = GetWindow().Position;
 
@@ -182,6 +182,11 @@ public partial class Character : Node2D
 			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
 		}
 
+		// use delta (in sec) make calculations independent of the framerate
+		// multiple a speed value by delta to animate a moving object 
+		displacement.X = (int) Math.Ceiling(displacement.X * delta);
+		displacement.Y = (int) Math.Ceiling(displacement.Y * delta);
+
 		// turning animation
 		if (lastSpeed.X > 0 && displacement.X < 0) // turn left animation
 		{
@@ -196,10 +201,6 @@ public partial class Character : Node2D
 
 		// Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
 
-		// use delta (in sec) make calculations independent of the framerate
-		// multiple a speed value by delta to animate a moving object 
-		displacement.X = (int) (displacement.X * delta);
-		displacement.Y = (int) (displacement.Y * delta);
 		// move!
 		GetWindow().Position = currPosition + (Vector2I)displacement;
 		// update variables - but not include 0, so we have previous direction
