@@ -17,6 +17,8 @@ public partial class Character : Node2D
 	private bool directionIsLeft;
 	// record the size of current screen;
 	private Vector2I screenSize;
+	// record the size of current game window;
+	private Vector2I windowSize;
 	private Godot.Timer _bubbleEventTimer;
 	
 	// animation fnction pointer: 
@@ -59,19 +61,19 @@ public partial class Character : Node2D
 	{
 		GD.Print("Input Event detected: ", inputEvent);
 		
-		// Check if the input event is a mouse button event
-		if (inputEvent is InputEventMouseButton mouseEvent)
-		{
-			// Check if the left mouse button was pressed
-			if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
-			{
-				// increase speed 
-				moveCtrl.increaseSpeed();
-				// stop bubbling
-				_bubbleEventTimer.Stop();
-				isBubbleEvent = false;
-			}
-		}
+		// // Check if the input event is a mouse button event
+		// if (inputEvent is InputEventMouseButton mouseEvent)
+		// {
+		// 	// Check if the left mouse button was pressed
+		// 	if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
+		// 	{
+		// 		// increase speed 
+		// 		moveCtrl.increaseSpeed();
+		// 		// stop bubbling
+		// 		_bubbleEventTimer.Stop();
+		// 		isBubbleEvent = false;
+		// 	}
+		// }
 			
 	}
 
@@ -81,6 +83,8 @@ public partial class Character : Node2D
 	private void _on_timer_timeout()
 	{
 		isBubbleEvent = false;
+		_animationPlayer.Stop();
+		_animationPlayer.Play("RESET");
 		Debug.Print("TIMER TIMEOUT INTERRUPT is reached");
 	}
 	
@@ -88,6 +92,14 @@ public partial class Character : Node2D
 	private void startBubbleEvent()
 	{
 		isBubbleEvent = true;
+		_animationPlayer.Stop();
+
+		// want a mod for glass!
+		if (!glass_mod) {
+			GetNode<Sprite2D>("glass").Visible = false;
+			GD.Print("_on_fishturn_animation_player_animation_finished glass.Visible = false reached");
+		}
+
 		_animationPlayer.Play("getBubbles");
 		_bubbleEventTimer.Start(2);
 	}
@@ -123,34 +135,57 @@ public partial class Character : Node2D
 			startBubbleEvent();
 		}
 	}
-	private void move()
+
+	private void handleRotation()
+	{
+		GetNode<Node2D>(".").RotationDegrees = moveCtrl.getRotationDegrees(GetNode<Node2D>(".").RotationDegrees);
+	}
+	private void move(double delta)
 	{
 		// handleDisplacement();
 		
 		// check if we need to wait until the bubble event is finished
 		if (isBubbleEvent) return;
 
-		Vector2I displacement = moveCtrl.getDisplacement();
+		Vector2 displacement = moveCtrl.getDisplacement();
+		// handleRotation(); /* experimental */
+
+		Vector2I currPosition = GetWindow().Position;
+
 		// out of screen handling
 		// reverse speed direction if at bound of screen 
-		if (GetWindow().Position.X < 0) 
+		if (currPosition.X <= 0) 
 		{
 			if (displacement.X < 0) displacement.X = 0;
+			currPosition.X = 0; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 1 is reached");
-		} else if (GetWindow().Position.X > screenSize.X)
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
+		} else if (currPosition.X >= (screenSize.X - windowSize.X)) // consider the buffer of the game window itself
 		{
 			if (displacement.X > 0) displacement.X = 0;
+			currPosition.X = screenSize.X - windowSize.X; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 2 is reached");
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
 		}
-		if (GetWindow().Position.Y > screenSize.Y) 
+		
+		if (currPosition.Y >= (screenSize.Y - windowSize.Y))  // consider the buffer of the game window itself
 		{
 			if (displacement.Y > 0) displacement.Y = 0;
+			currPosition.Y = screenSize.Y - windowSize.Y; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 3 is reached");
-		} else if (GetWindow().Position.Y < 0)
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
+		} else if (currPosition.Y <= 0)
 		{
 			if (displacement.Y < 0) displacement.Y = 0;
+			currPosition.Y = 0; // reset window position
 			Debug.Print("SCREEN EDGE HANDLING CASE 4 is reached");
+			Debug.Print("current window location " + currPosition.X.ToString() + ", " + currPosition.Y.ToString());
 		}
+
+		// use delta (in sec) make calculations independent of the framerate
+		// multiple a speed value by delta to animate a moving object 
+		displacement.X = (int) Math.Ceiling(displacement.X * delta);
+		displacement.Y = (int) Math.Ceiling(displacement.Y * delta);
 
 		// turning animation
 		if (lastSpeed.X > 0 && displacement.X < 0) // turn left animation
@@ -164,18 +199,19 @@ public partial class Character : Node2D
 			handleIdleMotion();
 		}
 
-		Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
+		// Debug.Print("Move is reached, last speed is "+lastSpeed.ToString() + ", current is " + displacement.ToString());
+
 		// move!
-		GetWindow().Position = GetWindow().Position + displacement;
+		GetWindow().Position = currPosition + (Vector2I)displacement;
 		// update variables - but not include 0, so we have previous direction
-		if (displacement.X != 0) lastSpeed = displacement;
+		if (displacement.X != 0) lastSpeed = (Vector2I)displacement;
 	}
 
 	
 	private MovementControl moveCtrl;
 
 	// set to true if you want some glasses
-	private bool glass_mod = true;
+	private bool glass_mod = false;
 	private void _on_fishturn_animation_player_animation_finished(StringName anim_name)
 	{
 		// want a mod for glass!
@@ -209,6 +245,22 @@ public partial class Character : Node2D
 		var screenID = DisplayServer.WindowGetCurrentScreen();
 		screenSize = DisplayServer.ScreenGetSize(screenID);
 
+		// stretch window size to fit 
+		// /*tested 200 window width in 1920x1280 resolution screen, which look good */
+		// double scaleFactor = Math.Ceiling((double) screenSize.X / (double)1920);
+
+		/* v2 - decrease fish vs tank ratio, try 1:10 */
+		double scaleFactor = Math.Ceiling((double) screenSize.X / (double)1920);
+		GD.Print("the screen size is " + screenSize.X.ToString());
+		GD.Print("the window scale factor is set to " + ((int)scaleFactor).ToString());
+
+		// get window size for border checks
+		windowSize = GetWindow().Size; // initially should be (200,160)
+		Vector2I newSize = new Vector2I(windowSize.X*(int)scaleFactor, windowSize.Y*(int)scaleFactor);
+		GetWindow().Size = newSize;  // scale viewport size
+		windowSize = GetWindow().Size; // then save a again
+		GD.Print("the window size is set to " + windowSize.X.ToString() + ", " + windowSize.Y.ToString());
+
 		// Get the Area2D node
 		var area2D = GetNode<Area2D>("body/Area2D");
 
@@ -241,6 +293,6 @@ public partial class Character : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		move();
+		move(delta);
 	}
 }
